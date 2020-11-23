@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylz.springboot.oauth.dao.SysAclMapper">
+
+    <resultMap id="BaseResultMap" type="com.ylz.springboot.oauth.pojo.SysAcl">
+        <id column="ID" property="id"/>
+        <result column="CODE" property="code"/>
+        <result column="NAME" property="name"/>
+        <result column="ACL_MODULE_ID" property="aclModuleId"/>
+        <result column="URL" property="url"/>
+        <result column="TYPE" property="type"/>
+        <result column="STATUS" property="status"/>
+        <result column="SEQ" property="seq"/>
+        <result column="REMARK" property="remark"/>
+        <result column="OPERATOR" property="operator"/>
+        <result column="OPERATE_TIME" property="operateTime"/>
+        <result column="OPERATE_IP" property="operateIp"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ID, CODE, NAME, ACL_MODULE_ID, URL, TYPE, STATUS, SEQ, REMARK, OPERATOR, OPERATE_TIME, OPERATE_IP
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from SYS_ACL
+        where ID = #{id}
+    </select>
+
+    <delete id="deleteByPrimaryKey">
+        delete from SYS_ACL where ID = #{id}
+    </delete>
+
+    <insert id="insert">
+        insert into SYS_ACL (ID, CODE, NAME, ACL_MODULE_ID, URL, TYPE, STATUS, SEQ,
+          REMARK, OPERATOR, OPERATE_TIME, OPERATE_IP)
+        values (#{id}, #{code}, #{name}, #{aclModuleId}, #{url}, #{type}, #{status}, #{seq},
+          #{remark}, #{operator}, #{operateTime}, #{operateIp})
+    </insert>
+    <insert id="insertSelective">
+        insert into SYS_ACL
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                ID,
+            </if>
+            <if test="code != null">
+                CODE,
+            </if>
+            <if test="name != null">
+                NAME,
+            </if>
+            <if test="aclModuleId != null">
+                ACL_MODULE_ID,
+            </if>
+            <if test="url != null">
+                URL,
+            </if>
+            <if test="type != null">
+                TYPE,
+            </if>
+            <if test="status != null">
+                STATUS,
+            </if>
+            <if test="seq != null">
+                SEQ,
+            </if>
+            <if test="remark != null">
+                REMARK,
+            </if>
+            <if test="operator != null">
+                OPERATOR,
+            </if>
+            <if test="operateTime != null">
+                OPERATE_TIME,
+            </if>
+            <if test="operateIp != null">
+                OPERATE_IP,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="code != null">
+                #{code},
+            </if>
+            <if test="name != null">
+                #{name},
+            </if>
+            <if test="aclModuleId != null">
+                #{aclModuleId},
+            </if>
+            <if test="url != null">
+                #{url},
+            </if>
+            <if test="type != null">
+                #{type},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+            <if test="seq != null">
+                #{seq},
+            </if>
+            <if test="remark != null">
+                #{remark},
+            </if>
+            <if test="operator != null">
+                #{operator},
+            </if>
+            <if test="operateTime != null">
+                #{operateTime},
+            </if>
+            <if test="operateIp != null">
+                #{operateIp},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective">
+        update SYS_ACL
+        <set>
+            <if test="code != null">
+                CODE = #{code},
+            </if>
+            <if test="name != null">
+                NAME = #{name},
+            </if>
+            <if test="aclModuleId != null">
+                ACL_MODULE_ID = #{aclModuleId},
+            </if>
+            <if test="url != null">
+                URL = #{url},
+            </if>
+            <if test="type != null">
+                TYPE = #{type},
+            </if>
+            <if test="status != null">
+                STATUS = #{status},
+            </if>
+            <if test="seq != null">
+                SEQ = #{seq},
+            </if>
+            <if test="remark != null">
+                REMARK = #{remark},
+            </if>
+            <if test="operator != null">
+                OPERATOR = #{operator},
+            </if>
+            <if test="operateTime != null">
+                OPERATE_TIME = #{operateTime},
+            </if>
+            <if test="operateIp != null">
+                OPERATE_IP = #{operateIp},
+            </if>
+        </set>
+        where ID = #{id}
+    </update>
+
+    <update id="updateByPrimaryKey">
+        update SYS_ACL
+        set CODE = #{code},
+          NAME = #{name},
+          ACL_MODULE_ID = #{aclModuleId},
+          URL = #{url},
+          TYPE = #{type},
+          STATUS = #{status},
+          SEQ = #{seq},
+          REMARK = #{remark},
+          OPERATOR = #{operator},
+          OPERATE_TIME = #{operateTime},
+          OPERATE_IP = #{operateIp}
+        where ID = #{id}
+    </update>
+
+    <select id="countByNameAndAclModuleId" resultType="int">
+        SELECT COUNT(1)
+        FROM SYS_ACL
+        WHERE NAME = #{name} AND ACL_MODULE_ID = #{aclModuleId}
+        <if test="id != null">
+            AND ID != #{id}
+        </if>
+    </select>
+
+    <select id="countByAclModuleId" resultType="int">
+        SELECT COUNT(1)
+        FROM SYS_ACL
+        WHERE ACL_MODULE_ID = #{aclModuleId}
+    </select>
+
+    <select id="countByAclModuleIdAndCode" resultType="int">
+        SELECT COUNT(1)
+        FROM SYS_ACL
+        WHERE ACL_MODULE_ID = #{aclModuleId} AND CODE != #{code}
+    </select>
+
+    <select id="findByAclModuleIdAndKeyword" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM SYS_ACL
+        WHERE NAME LIKE #{keyword}
+        <if test="aclModuleId != null">
+            AND ACL_MODULE_ID = #{aclModuleId}
+        </if>
+        ORDER BY SEQ ASC, NAME ASC
+    </select>
+
+    <select id="findByAclModuleIdAndTypeAndCode" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM SYS_ACL
+        WHERE ACL_MODULE_ID = #{aclModuleId} AND CODE = #{code} AND TYPE = #{type}
+    </select>
+
+    <select id="findByAclIdList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM SYS_ACL
+        WHERE ID IN
+        <foreach collection="aclIdList" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="selectAllAcl" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM SYS_ACL
+    </select>
+
+    <delete id="deleteByAclModuleIdAndCode">
+        DELETE FROM SYS_ACL
+        WHERE ACL_MODULE_ID = #{aclModuleId} AND CODE = #{code}
+    </delete>
+
+    <select id="countByUrl" resultType="int">
+        SELECT COUNT(1)
+        FROM SYS_ACL
+        WHERE URL = #{url}
+        <if test="id != null">
+            AND ID != #{id}
+        </if>
+    </select>
+
+</mapper>

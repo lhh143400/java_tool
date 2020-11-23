@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylz.springboot.oauth.dao.SysLogMapper">
+
+    <resultMap id="BaseResultMap" type="com.ylz.springboot.oauth.pojo.SysLog">
+        <id column="ID" property="id"/>
+        <result column="TYPE" property="type"/>
+        <result column="TARGET_ID" property="targetId"/>
+        <result column="OLD_VALUE" property="oldValue"/>
+        <result column="NEW_VALUE" property="newValue"/>
+        <result column="OPERATOR" property="operator"/>
+        <result column="OPERATE_TIME" property="operateTime"/>
+        <result column="OPERATE_IP" property="operateIp"/>
+        <result column="STATUS" property="status"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ID, TYPE, TARGET_ID, OLD_VALUE, NEW_VALUE, OPERATOR, OPERATE_TIME, OPERATE_IP, STATUS
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from SYS_LOG
+        where ID = #{id}
+    </select>
+
+    <delete id="deleteByPrimaryKey">
+        delete from SYS_LOG
+        where ID = #{id}
+    </delete>
+
+    <insert id="insert">
+        insert into SYS_LOG (ID, TYPE, TARGET_ID, OLD_VALUE, NEW_VALUE, OPERATOR, OPERATE_TIME,
+          OPERATE_IP, STATUS)
+        values (#{id}, #{type}, #{targetId}, #{oldValue}, #{newValue}, #{operator}, #{operateTime},
+          #{operateIp}, #{status})
+    </insert>
+
+    <insert id="insertSelective">
+        insert into SYS_LOG
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                ID,
+            </if>
+            <if test="type != null">
+                TYPE,
+            </if>
+            <if test="targetId != null">
+                TARGET_ID,
+            </if>
+            <if test="oldValue != null">
+                OLD_VALUE,
+            </if>
+            <if test="newValue != null">
+                NEW_VALUE,
+            </if>
+            <if test="operator != null">
+                OPERATOR,
+            </if>
+            <if test="operateTime != null">
+                OPERATE_TIME,
+            </if>
+            <if test="operateIp != null">
+                OPERATE_IP,
+            </if>
+            <if test="status != null">
+                STATUS,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="type != null">
+                #{type},
+            </if>
+            <if test="targetId != null">
+                #{targetId},
+            </if>
+            <if test="oldValue != null">
+                #{oldValue},
+            </if>
+            <if test="newValue != null">
+                #{newValue},
+            </if>
+            <if test="operator != null">
+                #{operator},
+            </if>
+            <if test="operateTime != null">
+                #{operateTime},
+            </if>
+            <if test="operateIp != null">
+                #{operateIp},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective">
+        update SYS_LOG
+        <set>
+            <if test="type != null">
+                TYPE = #{type},
+            </if>
+            <if test="targetId != null">
+                TARGET_ID = #{targetId},
+            </if>
+            <if test="oldValue != null">
+                OLD_VALUE = #{oldValue},
+            </if>
+            <if test="newValue != null">
+                NEW_VALUE = #{newValue},
+            </if>
+            <if test="operator != null">
+                OPERATOR = #{operator},
+            </if>
+            <if test="operateTime != null">
+                OPERATE_TIME = #{operateTime},
+            </if>
+            <if test="operateIp != null">
+                OPERATE_IP = #{operateIp},
+            </if>
+            <if test="status != null">
+                STATUS = #{status},
+            </if>
+        </set>
+        where ID = #{id}
+    </update>
+
+    <update id="updateByPrimaryKey">
+        update SYS_LOG
+        set TYPE = #{type},
+          TARGET_ID = #{targetId},
+          OLD_VALUE = #{oldValue},
+          NEW_VALUE = #{newValue},
+          OPERATOR = #{operator},
+          OPERATE_TIME = #{operateTime},
+          OPERATE_IP = #{operateIp},
+          STATUS = #{status}
+        where ID = #{id}
+    </update>
+
+    <sql id="QueryConditions">
+        <where>
+            <if test="dto.type != null and dto.type != 0">
+                TYPE = #{dto.type}
+            </if>
+            <if test="dto.oldValue != null and dto.oldValue != ''">
+                AND OLD_VALUE like #{dto.oldValue}
+            </if>
+            <if test="dto.newValue != null and dto.newValue != ''">
+                AND NEW_VALUE like #{dto.newValue}
+            </if>
+            <if test="dto.operator != null and dto.operator != ''">
+                AND OPERATOR like #{dto.operator}
+            </if>
+        </where>
+    </sql>
+
+    <select id="getPageListBySearchDto" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM SYS_LOG
+        <include refid="QueryConditions"/>
+        ORDER BY OPERATE_TIME DESC
+    </select>
+
+</mapper>

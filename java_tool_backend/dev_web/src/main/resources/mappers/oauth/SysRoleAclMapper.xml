@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylz.springboot.oauth.dao.SysRoleAclMapper">
+
+    <resultMap id="BaseResultMap" type="com.ylz.springboot.oauth.pojo.SysRoleAcl">
+        <id column="ID" property="id"/>
+        <result column="ROLE_ID" property="roleId"/>
+        <result column="ACL_ID" property="aclId"/>
+        <result column="OPERATOR" property="operator"/>
+        <result column="OPERATE_TIME" property="operateTime"/>
+        <result column="OPERATE_IP" property="operateIp"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ID, ROLE_ID, ACL_ID, OPERATOR, OPERATE_TIME, OPERATE_IP
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from SYS_ROLE_ACL
+        where ID = #{id}
+    </select>
+
+    <delete id="deleteByPrimaryKey">
+        delete from SYS_ROLE_ACL
+        where ID = #{id}
+    </delete>
+
+    <insert id="insert">
+        insert into SYS_ROLE_ACL (ID, ROLE_ID, ACL_ID, OPERATOR, OPERATE_TIME, OPERATE_IP)
+        values (#{id}, #{roleId}, #{aclId}, #{operator}, #{operateTime}, #{operateIp})
+    </insert>
+
+    <insert id="insertSelective">
+        insert into SYS_ROLE_ACL
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                ID,
+            </if>
+            <if test="roleId != null">
+                ROLE_ID,
+            </if>
+            <if test="aclId != null">
+                ACL_ID,
+            </if>
+            <if test="operator != null">
+                OPERATOR,
+            </if>
+            <if test="operateTime != null">
+                OPERATE_TIME,
+            </if>
+            <if test="operateIp != null">
+                OPERATE_IP,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="roleId != null">
+                #{roleId},
+            </if>
+            <if test="aclId != null">
+                #{aclId},
+            </if>
+            <if test="operator != null">
+                #{operator},
+            </if>
+            <if test="operateTime != null">
+                #{operateTime},
+            </if>
+            <if test="operateIp != null">
+                #{operateIp},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective">
+        update SYS_ROLE_ACL
+        <set>
+            <if test="roleId != null">
+                ROLE_ID = #{roleId},
+            </if>
+            <if test="aclId != null">
+                ACL_ID = #{aclId},
+            </if>
+            <if test="operator != null">
+                OPERATOR = #{operator},
+            </if>
+            <if test="operateTime != null">
+                OPERATE_TIME = #{operateTime},
+            </if>
+            <if test="operateIp != null">
+                OPERATE_IP = #{operateIp},
+            </if>
+        </set>
+        where ID = #{id}
+    </update>
+
+    <update id="updateByPrimaryKey">
+        update SYS_ROLE_ACL
+        set ROLE_ID = #{roleId},
+          ACL_ID = #{aclId},
+          OPERATOR = #{operator},
+          OPERATE_TIME = #{operateTime},
+          OPERATE_IP = #{operateIp}
+        where ID = #{id}
+    </update>
+
+    <select id="getAclIdListByRoleId" resultType="string">
+        SELECT ACL_ID
+        FROM SYS_ROLE_ACL
+        WHERE ROLE_ID = #{roleId}
+    </select>
+
+    <delete id="deleteByRoleId" parameterType="string">
+        DELETE FROM SYS_ROLE_ACL
+        WHERE ROLE_ID = #{roleId}
+    </delete>
+
+    <insert id="batchInsert" parameterType="map" useGeneratedKeys="false">
+        INSERT INTO SYS_ROLE_ACL
+        (<include refid="Base_Column_List"/>)
+        SELECT a.* FROM (
+        <foreach collection="roleAclList" item="roleAcl" separator="union" open="(" close=")">
+            SELECT #{roleAcl.id}, #{roleAcl.roleId}, #{roleAcl.aclId}, #{roleAcl.operator}, #{roleAcl.operateTime},
+            #{roleAcl.operateIp} FROM dual
+        </foreach>
+        )a
+    </insert>
+
+    <select id="findAclIdListByRoleId" resultType="string">
+        SELECT ACL_ID
+        FROM SYS_ROLE_ACL
+        WHERE ROLE_ID = #{roleId}
+    </select>
+
+</mapper>

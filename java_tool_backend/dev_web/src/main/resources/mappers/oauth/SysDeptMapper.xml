@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylz.springboot.oauth.dao.SysDeptMapper">
+
+    <resultMap id="BaseResultMap" type="com.ylz.springboot.oauth.pojo.SysDept">
+        <id column="ID" property="id"/>
+        <result column="NAME" property="name"/>
+        <result column="PARENT_ID" property="parentId"/>
+        <result column="FULL_LEVEL" property="fullLevel"/>
+        <result column="SEQ" property="seq"/>
+        <result column="REMARK" property="remark"/>
+        <result column="OPERATOR" property="operator"/>
+        <result column="OPERATE_TIME" property="operateTime"/>
+        <result column="OPERATE_IP" property="operateIp"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ID, NAME, PARENT_ID, FULL_LEVEL, SEQ, REMARK, OPERATOR, OPERATE_TIME, OPERATE_IP
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from SYS_DEPT
+        where ID = #{id}
+    </select>
+
+    <delete id="deleteByPrimaryKey">
+        delete from SYS_DEPT
+        where ID = #{id}
+    </delete>
+
+    <insert id="insert">
+        insert into SYS_DEPT (ID, NAME, PARENT_ID, FULL_LEVEL, SEQ, REMARK, OPERATOR, OPERATE_TIME,
+          OPERATE_IP)
+        values (#{id}, #{name}, #{parentId}, #{fullLevel}, #{seq}, #{remark}, #{operator}, #{operateTime},
+          #{operateIp})
+    </insert>
+
+    <insert id="insertSelective">
+        insert into SYS_DEPT
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                ID,
+            </if>
+            <if test="name != null">
+                NAME,
+            </if>
+            <if test="parentId != null">
+                PARENT_ID,
+            </if>
+            <if test="fullLevel != null">
+                FULL_LEVEL,
+            </if>
+            <if test="seq != null">
+                SEQ,
+            </if>
+            <if test="remark != null">
+                REMARK,
+            </if>
+            <if test="operator != null">
+                OPERATOR,
+            </if>
+            <if test="operateTime != null">
+                OPERATE_TIME,
+            </if>
+            <if test="operateIp != null">
+                OPERATE_IP,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="name != null">
+                #{name},
+            </if>
+            <if test="parentId != null">
+                #{parentId},
+            </if>
+            <if test="fullLevel != null">
+                #{fullLevel},
+            </if>
+            <if test="seq != null">
+                #{seq},
+            </if>
+            <if test="remark != null">
+                #{remark},
+            </if>
+            <if test="operator != null">
+                #{operator},
+            </if>
+            <if test="operateTime != null">
+                #{operateTime},
+            </if>
+            <if test="operateIp != null">
+                #{operateIp},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective">
+        update SYS_DEPT
+        <set>
+            <if test="name != null">
+                NAME = #{name},
+            </if>
+            <if test="parentId != null">
+                PARENT_ID = #{parentId},
+            </if>
+            <if test="fullLevel != null">
+                FULL_LEVEL = #{fullLevel},
+            </if>
+            <if test="seq != null">
+                SEQ = #{seq},
+            </if>
+            <if test="remark != null">
+                REMARK = #{remark},
+            </if>
+            <if test="operator != null">
+                OPERATOR = #{operator},
+            </if>
+            <if test="operateTime != null">
+                OPERATE_TIME = #{operateTime},
+            </if>
+            <if test="operateIp != null">
+                OPERATE_IP = #{operateIp},
+            </if>
+        </set>
+        where ID = #{id}
+    </update>
+
+    <update id="updateByPrimaryKey">
+        update SYS_DEPT
+        set NAME = #{name},
+          PARENT_ID = #{parentId},
+          FULL_LEVEL = #{fullLevel},
+          SEQ = #{seq},
+          REMARK = #{remark},
+          OPERATOR = #{operator},
+          OPERATE_TIME = #{operateTime},
+          OPERATE_IP = #{operateIp}
+        where ID = #{id}
+    </update>
+
+    <select id="selectChildDeptByLevel" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM SYS_DEPT
+        WHERE FULL_LEVEL LIKE CONCAT(#{fullLevel}, '.%')
+        AND PARENT_ID = #{parentId}
+    </select>
+
+    <select id="countByParentId" resultType="int">
+        SELECT COUNT(1)
+        FROM SYS_DEPT
+        WHERE PARENT_ID = #{deptId}
+    </select>
+
+    <select id="countByNameAndParentId" resultType="int">
+        SELECT COUNT(1)
+        FROM SYS_DEPT
+        WHERE NAME = #{name}
+        <if test="parentId != null">
+            AND PARENT_ID = #{parentId}
+        </if>
+        <if test="id != null">
+            AND ID != #{id}
+        </if>
+    </select>
+
+    <select id="selectAllDept" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM SYS_DEPT
+    </select>
+</mapper>
